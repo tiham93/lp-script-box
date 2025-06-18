@@ -1,9 +1,14 @@
+if 'bpy' in locals():
+    import importlib
+    if 'utils' in locals():
+        importlib.reload(utils) #pyright:ignore
 import bpy
+from . import utils
 import os
 
 class LP_PF_AddonPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__
-    script_dir: bpy.props.StringProperty(subtype='DIR_PATH') #type:ignore
+    script_dir: bpy.props.StringProperty(subtype='DIR_PATH', update=utils.update_lpy_group) #type:ignore
     editor_path: bpy.props.StringProperty(subtype='DIR_PATH') #type:ignore
     excluded: bpy.props.StringProperty(default='') #type:ignore
 
@@ -32,8 +37,8 @@ class LP_PF_AddonPreferences(bpy.types.AddonPreferences):
 
     def draw(self, context):
         layout = self.layout
-        if (not self.script_dir):
-            self.read_json()
+        # if (not self.script_dir):
+        #     self.read_json()
         layout.row().prop(self, 'script_dir', text='Script Directory')
         layout.row().prop(self, 'editor_path', text='External Editor Path')
         layout.row().prop(self, 'excluded', text='Excluded Files')

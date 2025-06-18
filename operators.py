@@ -2,8 +2,11 @@ if 'bpy' in locals():
     import importlib
     if 'preferences' in locals():
         importlib.reload(preferences) #pyright:ignore
+    if 'utils' in locals():
+        importlib.reload(utils) #pyright:ignore
 import bpy
 from . import preferences
+from . import utils
 import os
 
 def open_file_in_text_editor(context, filepath):
@@ -17,9 +20,48 @@ def open_file_in_text_editor(context, filepath):
     else:
         bpy.ops.text.open(filepath=filepath)
 
-class LP_OpenScriptView3D(bpy.types.Operator):
+class LP_OT_Fetch(bpy.types.Operator):
+    bl_label = 'Refresh LPY List'
+    bl_idname = 'wm.lpy_list_fetch'
+    bl_options = {'INTERNAL'}
+
+    def execute(self, context):
+        utils.update_lpy_group(self, context)
+        return {'FINISHED'}
+
+class LPY_OT_MovePinned(bpy.types.Operator):
+    bl_label = 'Reorder Pinned Scripts'
+    bl_idname = 'lpy.reorder_pinned'
+    bl_options = {
+        'INTERNAL',
+        'REGISTER',
+        'UNDO'
+    }
+    id: bpy.props.IntProperty(default=0) #type:ignore
+    new_id: bpy.props.IntProperty(default=0) #type:ignore
+
+    def execute(self, context):
+        pinned = context.scene.lpy.pinned
+        if utils.check_col_bounds(self.id, pinned) and utils.check_col_bounds(self.new_id, pinned):
+            pinned.move(self.id, self.new_id)
+        return {'FINISHED'}
+
+class LPY_OT_CallPinnedPie(bpy.types.Operator):
+    bl_label = 'Call Pinned Scripts Pie Menu'
+    bl_idname = 'wm.lpy_call_pinned'
+    bl_options = {
+        # 'INTERNAL',
+        'REGISTER',
+        'UNDO'
+    }
+
+    def execute(self, context):
+        bpy.ops.wm.call_menu_pie(name='LPY_MT_PinnedScriptPie')
+        return {'FINISHED'}
+
+class LPY_OT_EditInternal(bpy.types.Operator):
     bl_label = 'Open or Switch to Script in Editor'
-    bl_idname = 'text.open_unique_view3d'
+    bl_idname = 'wm.lpy_edit_internal'
     bl_options = {'UNDO', 'REGISTER', 'INTERNAL'}
     filepath: bpy.props.StringProperty() #type:ignore
     def execute(self, context):
@@ -36,9 +78,9 @@ def edit_external(context, filepath):
         except:
             return
 
-class LPY_PT_EditExternal(bpy.types.Operator):
+class LPY_OT_EditExternal(bpy.types.Operator):
     bl_label = 'Edit With External Editor'
-    bl_idname = 'lpy.edit_external'
+    bl_idname = 'wm.lpy_edit_external'
     bl_options = {
         # 'INTERNAL',
         'REGISTER',
@@ -55,10 +97,10 @@ class LPY_PT_EditExternal(bpy.types.Operator):
         edit_external(context, self.filepath)
         return {'FINISHED'}
 
-class LP_RunScriptView3D(bpy.types.Operator):
+class LPY_OT_RunScriptView3D(bpy.types.Operator):
     bl_label = 'Run Script in Editor'
-    bl_idname = 'text.run_unique_view3d'
-    bl_options = {'UNDO', 'REGISTER', 'INTERNAL'}
+    bl_idname = 'wm.lpy_run_script'
+    bl_options = {'UNDO', 'REGISTER'}
     filepath:bpy.props.StringProperty() #type:ignore
     def execute(self, context):
         global_namespace = {'__file__': self.filepath, '__name__': '__main__'}
@@ -86,22 +128,17 @@ class LPY_OT_PinScript(bpy.types.Operator):
         'REGISTER',
         'UNDO'
     }
-
-    @classmethod
-    def poll(cls, context):
-        scripts = context.scene.lpy.lpy_group
-        active = context.scene.lpy.lpy_active
-        return ( active > -1 ) and ( active < len(scripts) )
+    filepath: bpy.props.StringProperty(default='') #type:ignore
 
     def execute(self, context):
         lpy = context.scene.lpy
-        scripts = lpy.lpy_group
-        active = lpy.lpy_active
         pinned = lpy.pinned
 
-        item = pinned.add()
-        item.name = scripts[active].name
-        return {'FINISHED'}
+        if self.filepath and os.path.exists(self.filepath):
+            item = pinned.add()
+            item.name = self.filepath
+            return {'FINISHED'}
+        return {'CANCELLED'}
 
 class LPY_OT_RemovePinned(bpy.types.Operator):
     bl_label = 'Remove Pinned Script'
@@ -125,11 +162,14 @@ class LPY_OT_RemovePinned(bpy.types.Operator):
 
 classes = [
     OsOpenDir,
-    LP_OpenScriptView3D,
-    LP_RunScriptView3D,
+    LP_OT_Fetch,
+    LPY_OT_EditInternal,
+    LPY_OT_RunScriptView3D,
     LPY_OT_PinScript,
     LPY_OT_RemovePinned,
-    LPY_PT_EditExternal,
+    LPY_OT_EditExternal,
+    LPY_OT_CallPinnedPie,
+    LPY_OT_MovePinned,
 ]
 
 def register():
