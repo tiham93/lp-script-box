@@ -6,8 +6,8 @@ import bpy
 from . import preferences
 import os
 
-def update_lpy_group(self, context):
-    context.scene.lpy.lpy_group.clear()
+def update_scripts(self, context):
+    context.scene.lpy.scripts.clear()
     script_dir = preferences.get_prefs(context).script_dir
     if not os.path.exists(script_dir):
         try:
@@ -18,7 +18,7 @@ def update_lpy_group(self, context):
     for t in os.listdir(script_dir):
         if (t != '__init__.py') and t.endswith('.py'):
             filepath = os.path.join(script_dir, t)
-            item = context.scene.lpy.lpy_group.add()
+            item = context.scene.lpy.scripts.add()
             item.name = filepath
 
 def check_col_bounds(index, col):

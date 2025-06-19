@@ -8,7 +8,7 @@ import os
 
 class LP_PF_AddonPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__
-    script_dir: bpy.props.StringProperty(subtype='DIR_PATH', update=utils.update_lpy_group) #type:ignore
+    script_dir: bpy.props.StringProperty(subtype='DIR_PATH', update=utils.update_scripts) #type:ignore
     editor_path: bpy.props.StringProperty(subtype='DIR_PATH') #type:ignore
     excluded: bpy.props.StringProperty(default='') #type:ignore
 
