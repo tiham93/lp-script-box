@@ -87,6 +87,11 @@ This allows quick execution while using mouse.
 
 ![](doc/pinned-pie.gif)
 
+## Planned Features
+- Tag scripts and search scripts by tags
+- Show scripts' descriptions while searching/selecting
+- Pinned scripts presets
+
 ## Installation
 Install the addon like you would install any legacy addon with a zip file.
 Should be compatible with all version of Blender since 3.6.
