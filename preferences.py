@@ -13,16 +13,28 @@ class LP_PF_AddonPreferences(bpy.types.AddonPreferences):
     excluded: bpy.props.StringProperty(default='') #type:ignore
 
     def read_json(self):
+        version = bpy.app.version
+        isv5 = (version[0] > 4)
         import json
         json_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'preferences.json')
+
         if not os.path.exists(json_file_path):
-            self['script_dir'] = self['editor_path'] = ''
+            if not isv5:
+                self['script_dir'] = self['editor_path'] = ''
+            else:
+                self.script_dir = self.editor_path = ''
             return
         with open(json_file_path, 'r') as file:
             data = json.load(file)
-            self['script_dir'] = data.get('script_dir', '')
-            self['editor_path'] = data.get('editor_path', '')
-            self['excluded'] = data.get('excluded', '')
+            if not isv5:
+                self['script_dir'] = data.get('script_dir', '')
+                self['editor_path'] = data.get('editor_path', '')
+                self['excluded'] = data.get('excluded', '')
+            else:
+                self.script_dir = data.get('script_dir', '')
+                self.editor_path = data.get('editor_path', '')
+                self.excluded = data.get('excluded', '')
+
 
     def write_json(self):
         import json

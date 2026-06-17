@@ -75,6 +75,10 @@ open Blender's internal text editor to create a script with that name.
 
 ![](doc/quick-create-new.gif)
 
+Additional Quick Run commands:
+- Prefix script name with ":e " to edit instead of running the script
+- Prefix script name with ":x " to edit in external editor instead
+
 #### Pinned Scripts Pie Menu
 This operator is intended for use with a hotkey.
 

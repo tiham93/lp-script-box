@@ -1,8 +1,8 @@
 bl_info = {
     "name": "LP Script Box",
     "author": "Long Phan",
-    "version": (1, 4, 0),
-    "blender": (4, 4, 0),
+    "version": (1, 5, 0),
+    "blender": (5, 0, 0),
     "location": "3D Viewport > Sidebar > LP Tools",
     "description": "Blender addon to help manage, search, run, edit big collections of Blender python scripts",
     "category": "Scripting",
