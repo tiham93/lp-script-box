@@ -3,16 +3,24 @@ LP Script Box is a Blender addon to help speed up Blender scripting workflow.
 Manage, search, edit, run big collections of python scripts.
 
 <!--toc:start-->
-- [Features](#features)
-- [Usage](#usage)
-  - [Configuration](#configuration)
-  - [Main Panel](#main-panel)
-  - [Pinned Scripts](#pinned-scripts)
-  - [Quick Access](#quick-access)
-    - [Quick Run](#quick-run)
-    - [Pinned Scripts Pie Menu](#pinned-scripts-pie-menu)
-- [Installation](#installation)
+- [LP Script Box](#lp-script-box)
+  - [Get this addon](#get-this-addon)
+  - [Features](#features)
+  - [Usage](#usage)
+    - [Configuration](#configuration)
+    - [Main Panel](#main-panel)
+    - [Pinned Scripts](#pinned-scripts)
+    - [Quick Access](#quick-access)
+      - [Quick Run](#quick-run)
+      - [Pinned Scripts Pie Menu](#pinned-scripts-pie-menu)
+  - [Planned Features](#planned-features)
+  - [Installation](#installation)
 <!--toc:end-->
+
+## Get this addon
+- **Source code** for this addon (v1.5) is available here on this repo
+- **Support this project:** You can also get this addon on [Gumroad]() for $3 to
+  get current version + all future updates, fixes and new features.
 
 ## Features
 
@@ -95,7 +103,7 @@ This allows quick execution while using mouse.
 ## Installation
 Install the addon like you would install any legacy addon with a zip file.
 Should be compatible with all version of Blender since 3.6.
-Tested in Blender 3.6-4.4.
+Tested in Blender 3.6-5.0.
 
 Edit > Preferences > Addons > Install from Disk > Select the zip file > Done
 
