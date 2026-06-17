@@ -19,7 +19,7 @@ Manage, search, edit, run big collections of python scripts.
 
 ## Get this addon
 - **Source code** for this addon (v1.5) is available here on this repo
-- **Support this project:** You can also get this addon on [Gumroad]() for $3 to
+- **Support this project:** You can also get this addon on [Gumroad]() for $4 to
   get current version + all future updates, fixes and new features.
 
 ## Features
